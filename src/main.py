@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status, Body, Path
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from schema import CreateExpenseSchema, ExpenseSchema, UpdateExpenseSchema
 import uvicorn
 
 app = FastAPI(title="Expanse Management API", version="1.0.0")
@@ -13,36 +13,26 @@ expenses = [
 
 current_id = max(expenses, key=lambda x: x["id"])["id"]
 
-class BaseExpense(BaseModel):
-    description: str = Field(..., min_length=2, max_length=255,  pattern=r'^[\u0600-\u06FF\sA-Za-z0-9]+$')
-    amount: float = Field(..., gt=0.0)
-
-class Expense(BaseExpense):
-    id: int = Field(..., gt=0)
-    
-class CreateUpdateExpense(BaseExpense):
-    pass
-
-@app.get("/expenses", response_model=list[Expense])
+@app.get("/expenses", response_model=list[ExpenseSchema])
 def get_expenses():
     return JSONResponse(content=expenses, status_code=status.HTTP_200_OK)
 
-@app.get("/expenses/{expense_id}", response_model=Expense)
+@app.get("/expenses/{expense_id}", response_model=ExpenseSchema)
 def get_expense(expense_id: int = Path(..., gt=0)):
     for item in expenses:
         if item['id'] == expense_id:
             return JSONResponse(content=item, status_code=status.HTTP_200_OK)
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Expense not found")
 
-@app.post("/expenses", response_model=Expense)
-def create_expense(request: CreateUpdateExpense = Body(...)):
+@app.post("/expenses", response_model=ExpenseSchema)
+def create_expense(request: CreateExpenseSchema = Body(...)):
     global current_id
     current_id += 1
     expenses.append({"id": current_id, "description": request.description, "amount": request.amount})
     return JSONResponse(content=expenses[-1], status_code=status.HTTP_201_CREATED)
 
-@app.put("/expenses/{expense_id}", response_model=Expense)
-def update_expense(expense_id: int = Path(..., gt=0), request: CreateUpdateExpense = Body(...)):
+@app.put("/expenses/{expense_id}", response_model=ExpenseSchema)
+def update_expense(expense_id: int = Path(..., gt=0), request: UpdateExpenseSchema = Body(...)):
     for item in expenses:
         if item['id'] == expense_id:
             item['description'] = request.description
