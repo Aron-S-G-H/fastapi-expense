@@ -1,0 +1,41 @@
+msgid "Expense not found"
+msgstr "Expense not found"
+
+msgid "Expense deleted"
+msgstr "Expense deleted"
+
+msgid "token type is invalid"
+msgstr "token type is invalid"
+
+msgid "token is not correct"
+msgstr "token is not correct"
+
+msgid "token expired"
+msgstr "token expired"
+
+msgid "user logged in"
+msgstr "user logged in"
+
+msgid "username or password is wrong"
+msgstr "username or password is wrong"
+
+msgid "User already exists"
+msgstr "User already exists"
+
+msgid "invalid refresh token"
+msgstr "invalid refresh token"
+
+msgid "user not found"
+msgstr "user not found"
+
+msgid "logged out successfully"
+msgstr "logged out successfully"
+
+msgid "hi"
+msgstr "hi"
+
+msgid "bye"
+msgstr "bye"
+
+msgid "maktabkhooneh"
+msgstr "maktabkhooneh"

@@ -1,0 +1,41 @@
+msgid "Expense not found"
+msgstr "هزینه پیدا نشد"
+
+msgid "Expense deleted"
+msgstr "آیتم هزینه حذف شد"
+
+msgid "token type is invalid"
+msgstr "نوع توکن نامعتبر است"
+
+msgid "token is not correct"
+msgstr "توکن نامعتبر است"
+
+msgid "token expired"
+msgstr "توکن منقضی شده است"
+
+msgid "user logged in"
+msgstr "کاربر لاگین شد"
+
+msgid "username or password is wrong"
+msgstr "یوزرنیم یا پسورد اشتباه است"
+
+msgid "User already exists"
+msgstr "کاربر از قبل موجود هست"
+
+msgid "invalid refresh token"
+msgstr "رفرش توکن نامعتبر"
+
+msgid "user not found"
+msgstr "کاربر یافت نشد"
+
+msgid "logged out successfully"
+msgstr "کاربر خارج شد از حسابش"
+
+msgid "hi"
+msgstr "سلام"
+
+msgid "bye"
+msgstr "خداحافظ"
+
+msgid "maktabkhooneh"
+msgstr "مکنب خونه"

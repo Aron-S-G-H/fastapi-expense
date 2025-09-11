@@ -5,6 +5,8 @@ class Setting(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     AUTH_MODE: str
+    SUPPORTED_LANGS: str
+    DEFAULT_LANG: str
         
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -12,5 +14,8 @@ class Setting(BaseSettings):
         case_sensitive=False,
     )
     
+    @property
+    def supported_langs_list(self):
+        return [lang.strip() for lang in self.SUPPORTED_LANGS.split(",")]
     
 settings = Setting()
