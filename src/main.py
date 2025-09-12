@@ -8,7 +8,7 @@ from src.config import settings
 
 
 SUPPORTED_LANGS = settings.supported_langs_list
-DEFAULT_LANG= settings.DEFAULT_LANG
+DEFAULT_LANG = settings.DEFAULT_LANG
 
 
 def _normalize_lang(lang: str | None) -> str:
@@ -24,17 +24,19 @@ app = FastAPI(title="Expanse Management API", version="1.0.0", debug=True)
 
 @app.middleware("http")
 async def language_middleware(request: Request, call_next):
-    lang = request.query_params.get("lang") or request.headers.get("accept-language", DEFAULT_LANG)
+    lang = request.query_params.get("lang") or request.headers.get(
+        "accept-language", DEFAULT_LANG
+    )
     lang = _normalize_lang(lang)
     request.state.lang = lang
     response = await call_next(request)
     return response
 
 
-app.include_router(expense_router, tags=['Expenses'])
-app.include_router(auth_router, tags=['Authentication'])
-app.include_router(auth_coockie_router, tags=['Coockie Authentication'])
-app.include_router(test_locale_router, tags=['Test Locale'])
+app.include_router(expense_router, tags=["Expenses"])
+app.include_router(auth_router, tags=["Authentication"])
+app.include_router(auth_coockie_router, tags=["Coockie Authentication"])
+app.include_router(test_locale_router, tags=["Test Locale"])
 
 
 if __name__ == "__main__":
