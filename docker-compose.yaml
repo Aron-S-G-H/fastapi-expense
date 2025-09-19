@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:7.4.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - db
+      - redis 
+    environment:
+      SQLALCHEMY_DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/postgres
+      SECRET_KEY: 71259363618141a63865be1a04be41383ce01576e6b20622ec76300caaf13e5d
+      REDIS_URL: redis://redis:6379 
+      ALGORITHM: HS256
+      AUTH_MODE: Bearer
+      SUPPORTED_LANGS: fa,en
+      DEFAULT_LANG: en
+    ports:
+      - "8000:8000"
+    command: bash -c 'fastapi dev --host 0.0.0.0 --port 8000'
+    volumes:
+      - ./src:/usr/src

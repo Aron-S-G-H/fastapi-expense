@@ -8,6 +8,7 @@ class Setting(BaseSettings):
     AUTH_MODE: str
     SUPPORTED_LANGS: str
     DEFAULT_LANG: str
+    REDIS_URL: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
