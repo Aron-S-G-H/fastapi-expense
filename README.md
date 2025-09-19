@@ -1,1 +1,1 @@
-استفاده کردن از flake8 برای linting و black برای formatting
+اضافه کردن test و custom exeption
