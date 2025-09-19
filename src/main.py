@@ -1,5 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 import uvicorn
+from starlette.exceptions import HTTPException as StarletteExeption
 from src.routers.expense_router import router as expense_router
 from src.routers.auth_router import router as auth_router
 from src.routers.auth_coockie_router import router as auth_coockie_router
@@ -31,6 +34,26 @@ async def language_middleware(request: Request, call_next):
     request.state.lang = lang
     response = await call_next(request)
     return response
+
+
+@app.exception_handler(StarletteExeption)
+def http_exception_handler(request, exec):
+    error_response = {
+        "error_raised": True,
+        "status_code": exec.status_code,
+        "detail": exec.detail,
+    }
+    return JSONResponse(content=error_response, status_code=exec.status_code)
+
+
+@app.exception_handler(RequestValidationError)
+def http_validation_exeption_handler(request, exec):
+    error_response = {
+        "error_raised": True,
+        "status_code": status.HTTP_422_UNPROCESSABLE_ENTITY,
+        "detail": exec.errors(),
+    }
+    return JSONResponse(content=error_response, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)    
 
 
 app.include_router(expense_router, tags=["Expenses"])

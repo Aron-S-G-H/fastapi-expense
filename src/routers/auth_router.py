@@ -135,7 +135,7 @@ def login(db: db_dependency, _: locale_dependency, data: LoginSchema = Body(...)
 
 
 @router.post(
-    "/reister",
+    "/register",
     response_model=RegisterResponseSchema,
     status_code=status.HTTP_201_CREATED,
 )
