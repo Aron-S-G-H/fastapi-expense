@@ -27,6 +27,14 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
+  locust:
+    image: locustio/locust
+    container_name: locust
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py
 
   backend:
     build:
@@ -36,6 +44,7 @@ services:
     depends_on:
       - db
       - redis 
+      - locust
     environment:
       SQLALCHEMY_DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/postgres
       SECRET_KEY: 71259363618141a63865be1a04be41383ce01576e6b20622ec76300caaf13e5d
@@ -46,6 +55,6 @@ services:
       DEFAULT_LANG: en
     ports:
       - "8000:8000"
-    command: bash -c 'fastapi dev --host 0.0.0.0 --port 8000'
+    # command: bash -c 'fastapi dev --host 0.0.0.0 --port 8000'
     volumes:
-      - ./src:/usr/src
+      - .:/usr/src/

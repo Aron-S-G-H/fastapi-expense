@@ -18,7 +18,7 @@ COPY ./requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -i https://mirror-pypi.runflare.com/simple --no-cache-dir --upgrade -r ./requirements.txt
 
-COPY ./src .
+COPY ./ .
 
 EXPOSE 8000
 
