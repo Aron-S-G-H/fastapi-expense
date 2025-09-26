@@ -8,7 +8,14 @@ from src.routers.auth_router import router as auth_router
 from src.routers.auth_coockie_router import router as auth_coockie_router
 from src.routers.test_locale import router as test_locale_router
 from src.config import settings
+import sentry_sdk
 
+sentry_sdk.init(
+    dsn=settings.SENTRY_DSN,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+)
 
 SUPPORTED_LANGS = settings.supported_langs_list
 DEFAULT_LANG = settings.DEFAULT_LANG
@@ -60,6 +67,10 @@ app.include_router(expense_router, tags=["Expenses"])
 app.include_router(auth_router, tags=["Authentication"])
 app.include_router(auth_coockie_router, tags=["Coockie Authentication"])
 app.include_router(test_locale_router, tags=["Test Locale"])
+
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ class Setting(BaseSettings):
     SUPPORTED_LANGS: str
     DEFAULT_LANG: str
     REDIS_URL: str
+    SENTRY_DSN: str = "https://11395568eaeae90b40c6cf95202d8801@sentry.hamravesh.com/9091"
 
     model_config = SettingsConfigDict(
         env_file=".env",
