@@ -1,0 +1,27 @@
+FROM python:3.12-alpine
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /usr/src
+
+COPY ./requirements.txt .
+
+RUN apk add --no-cache --virtual .build-deps \
+    gcc musl-dev libffi-dev openssl-dev build-base \
+    && python -m pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r /usr/src/app/requirements.txt \
+    && apk del .build-deps
+    
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
+
+COPY ./ .
+
+EXPOSE 80
+
+COPY entrypoint.sh /src/entrypoint.sh
+RUN chmod +x /src/entrypoint.sh
+
+CMD ["/src/entrypoint.sh"]

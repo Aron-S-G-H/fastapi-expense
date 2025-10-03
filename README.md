@@ -1,1 +1,1 @@
-اماده کردن پروژه برای production و اضافه کردن sentry و گیت هاب actions
+اضافه کردن github actions و Dockerfile.prod و تفاوت بین multi-stage و single-stage

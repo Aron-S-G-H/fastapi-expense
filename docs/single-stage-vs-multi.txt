@@ -1,0 +1,35 @@
+پیاده‌سازی عادی (single-stage): هم مرحله‌ی ساخت (build) و هم مرحله‌ی اجرا (runtime) توی یک تصویر قرار می‌گیره — ساده ولی معمولاً بزرگ‌تر و شامل ابزارهای ساخت است.
+
+multi-stage: ساخت را در یک یا چند stage جدا انجام می‌دی و فقط آرته‌فکتِ نهایی را به یک تصویر نهایی (کوچک و سبک) کپی می‌کنی — نتیجه کوچک‌تر، امن‌تر و مناسب برای production.
+
+مزایای multi-stage
+اندازه تصویر نهایی خیلی کمتر → دانلود/استارت سریع‌تر و مصرف پهنای باند کمتر.
+سطح حمله (attack surface) کمتر — کمتر پکیج و ابزار در runtime.
+امکان استفاده از تصاویر بهینه برای runtime (distroless, alpine, scratch).
+ساخت تصاویر قابل‌نسخه‌برداری و تمیز: فقط آرته‌فکت‌های موردنیاز داخل تصویر نهایی اند.
+
+معایب
+کانفیگ کمی پیچیده‌تر از یک Dockerfile ساده است.
+زمان build ممکن است کمی بیشتر شود (چون مراحل اضافه‌ای اجرا می‌شود)، ولی معمولاً هزینه‌ی زمان با مزیت حجم و امنیت جبران می‌شود.
+برای دیباگ کردن داخل کانتِینرِ runtime ممکن است ابزارهای ساخت در دسترس نباشند (باید image مخصوص‌dev یا استفاده از build args کنار گذاشته شود).
+
+چه زمانی حتماً از multi-stage استفاده کن؟
+وقتی می‌خوای تصویر نهایی تا حد ممکن کوچک و امن باشه (API servers، microservices، production web apps).
+وقتی ابزار build (compiler, node-gyp, build-essential, go toolchain) سنگینه و نیازی بهشون در runtime نیست.
+
+وقتی multi-stage لازم نیست
+محیط توسعه محلی که همیشه می‌خواد ابزار build داخل کانتینر باشه برای debug سریع. (می‌تونی برای dev یک Dockerfile جدا یا یک stage dev نگه داری.)
+
+فرمان‌ها
+# ساخت تصویر
+docker build -t myapp:normal -f Dockerfile.normal .
+docker build -t myapp:multi  -f Dockerfile.multi .
+
+# مقایسه سایز
+docker images myapp
+
+# بررسی لایه‌ها
+docker history myapp:multi
+
+# ساخت فقط تا یک stage خاص (useful for debugging)
+docker build --target builder -t myapp:builder -f Dockerfile.multi .
