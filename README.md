@@ -1,1 +1,1 @@
-اماده کردن پروژه برای production و اضافه کردن sentry
+اماده کردن پروژه برای production و اضافه کردن sentry و گیت هاب actions
