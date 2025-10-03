@@ -3,11 +3,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Setting(BaseSettings):
     SQLALCHEMY_DATABASE_URL: str = "postgresql+psycopg2://postgres:postgres@db:5432/postgres"
-    SECRET_KEY: str
-    ALGORITHM: str
-    AUTH_MODE: str
-    SUPPORTED_LANGS: str
-    DEFAULT_LANG: str
+    SECRET_KEY: str = "71259363618141a63865be1a04be41383ce01576e6b20622ec76300caaf13e5d"
+    ALGORITHM: str = "HS256"
+    AUTH_MODE: str = "Bearer"
+    SUPPORTED_LANGS: str = "fa,en"
+    DEFAULT_LANG: str = "en"
     REDIS_URL: str = "redis://redis:6379"
     SENTRY_DSN: str = "https://11395568eaeae90b40c6cf95202d8801@sentry.hamravesh.com/9091"
 
